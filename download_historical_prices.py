@@ -1,8 +1,12 @@
-import os
+import os, configparser
 from pandas_datareader import data as pdr
 import pandas as pd
 import fix_yahoo_finance as yf
 yf.pdr_override()
+
+#init configparser
+config = configparser.ConfigParser()
+config.read('config.ini')
 
 
 START_DATE = "2003-08-01"
@@ -10,7 +14,7 @@ END_DATE = "2015-01-01"
 
 
 def build_stock_dataset(start=START_DATE, end=END_DATE):
-    statspath = "intraQuarter/_KeyStats/"
+    statspath = config['statsPath']
     ticker_list = os.listdir(statspath)
 
     # fix .ds_store issue on mac
@@ -26,16 +30,16 @@ def build_stock_dataset(start=START_DATE, end=END_DATE):
         ticker for ticker in ticker_list if ticker.upper() not in stock_data.columns]
     print(f"{len(missing_tickers)} tickers are missing: \n {missing_tickers} ")
     stock_data.ffill(inplace=True)
-    stock_data.to_csv('stock_prices.csv')
+    stock_data.to_csv(config['stock_prices_file'])
 
 
 def build_sp500_dataset(start=START_DATE, end=END_DATE):
     index_data = pdr.get_data_yahoo('SPY', start=START_DATE, end=END_DATE)
-    index_data.to_csv("sp500_index.csv")
+    index_data.to_csv(config['sp500_data_file'])
 
 
 def build_dataset_iteratively(idx_start, idx_end, date_start=START_DATE, date_end=END_DATE):
-    statspath = "intraQuarter/_KeyStats/"
+    statspath = config['statsPath']
     ticker_list = os.listdir(statspath)
 
     df = pd.DataFrame()
@@ -50,7 +54,7 @@ def build_dataset_iteratively(idx_start, idx_end, date_start=START_DATE, date_en
             continue
         adj_close = stock_ohlc['Adj Close'].rename(ticker)
         df = pd.concat([df, adj_close], axis=1)
-    df.to_csv('stock_prices.csv')
+    df.to_csv(config['stock_prices_file'])
 
 
 if __name__ == "__main__":

@@ -1,14 +1,18 @@
+import configparser
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from utils import data_string_to_float, status_calc
 
+#init configparser
+config = configparser.ConfigParser()
+config.read('config.ini')
 
 # The percentage by which a stock has to beat the S&P500 to be considered a 'buy'
-OUTPERFORMANCE = 10
+OUTPERFORMANCE = config['outperform']
 
 
 def build_data_set():
-    training_data = pd.read_csv("keystats.csv", index_col='Date')
+    training_data = pd.read_csv(config['keystats_file'], index_col='Date')
     training_data.dropna(axis=0, how='any', inplace=True)
     features = training_data.columns[6:]
 
@@ -27,7 +31,7 @@ def predict_stocks():
     clf = RandomForestClassifier(n_estimators=100, random_state=0)
     clf.fit(X_train, y_train)
 
-    data = pd.read_csv('forward_sample.csv', index_col='Date')
+    data = pd.read_csv(config['forward_sample_file'], index_col='Date')
     data.dropna(axis=0, how='any', inplace=True)
     features = data.columns[6:]
     X_test = data[features].values
@@ -39,11 +43,11 @@ def predict_stocks():
     else:
         invest_list = z[y_pred].tolist()
         print(
-            f"{len(invest_list)} stocks predicted to outperform the S&P500 by more than {OUTPERFORMANCE}%:")
+            f"{len(invest_list)} stocks could outperform the S&P500 by {OUTPERFORMANCE}% or more")
         print(' '.join(invest_list))
         return invest_list
 
 
 if __name__ == '__main__':
-    print("Building dataset and predicting stocks...")
+    print("Building dataset and predicting stocks that could outperform by {OUTPERFORMANCE}%")
     predict_stocks()

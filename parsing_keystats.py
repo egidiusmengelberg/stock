@@ -1,13 +1,17 @@
 import pandas as pd
-import os
+import os, configparser
 import time
 import re
 from datetime import datetime
 from utils import data_string_to_float
 from tqdm import tqdm
 
+#init configparser
+config = configparser.ConfigParser()
+config.read('config.ini')
 
-statspath = "intraQuarter/_KeyStats/"
+
+statspath = config['statsPath']
 
 features = [  # Valuation measures
     'Market Cap',
@@ -57,9 +61,9 @@ features = [  # Valuation measures
 
 def preprocess_price_data():
     sp500_raw_data = pd.read_csv(
-        "sp500_index.csv", index_col='Date', parse_dates=True)
+        config['sp500_data_file'], index_col='Date', parse_dates=True)
     stock_raw_data = pd.read_csv(
-        "stock_prices.csv", index_col='Date', parse_dates=True)
+        config['sp500_data_file'], index_col='Date', parse_dates=True)
 
     start_date = str(stock_raw_data.index[0])
     end_date = str(stock_raw_data.index[-1])
@@ -160,7 +164,7 @@ def parse_keystats(sp500_df, stock_df):
 
     df.dropna(axis=0, subset=['Price', 'stock_p_change'], inplace=True)
     # Output the CSV
-    df.to_csv('keystats.csv', index=False)
+    df.to_csv(config['keystats_file'], index=False)
 
 
 if __name__ == '__main__':

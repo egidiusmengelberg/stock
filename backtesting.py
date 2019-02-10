@@ -1,4 +1,5 @@
 # Preprocessing
+import configparser
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -6,9 +7,13 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import precision_score
 from utils import status_calc
 
+#init configparser
+config = configparser.ConfigParser()
+config.read('config.ini')
+
 
 def backtest():
-    data_df = pd.read_csv("keystats.csv", index_col='Date')
+    data_df = pd.read_csv(config['keystats_file'], index_col='Date')
     data_df.dropna(axis=0, how='any', inplace=True)
 
     features = data_df.columns[6:]

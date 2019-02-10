@@ -1,5 +1,5 @@
 import pandas as pd
-import os
+import os, configparser
 import re
 import time
 import requests
@@ -7,7 +7,11 @@ import numpy as np
 from tqdm import tqdm
 from utils import data_string_to_float
 
-statspath = "intraQuarter/_KeyStats/"
+#init configparser
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+statspath = config['statsPath']
 
 features = [  # Valuation measures
     'Market Cap',
@@ -124,4 +128,4 @@ def forward():
 if __name__ == '__main__':
     check_yahoo()
     current_df = forward()
-    current_df.to_csv('forward_sample.csv', index=False)
+    current_df.to_csv(config['forward_sample_file'], index=False)
