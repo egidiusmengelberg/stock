@@ -3,8 +3,7 @@
 ## Contents
 
 - [Contents](#contents)
-- [Requirements](#requirements/installation)
-- [Installation](#installation)
+- [Requirements/Installation](#requirements/installation)
 - [Usage](#usage)
 - [Explanation](#explanation)
 
