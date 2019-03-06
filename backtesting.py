@@ -18,7 +18,7 @@ colorama.init()
 
 
 def backtest():
-    data_df = pd.read_csv(config['filepaths']['keystats_file'], index_col='Date')
+    data_df = pd.read_csv("keystats.csv", index_col='Date')
     data_df.dropna(axis=0, how='any', inplace=True)
 
     features = data_df.columns[6:]
