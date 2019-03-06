@@ -63,7 +63,7 @@ def preprocess_price_data():
     sp500_raw_data = pd.read_csv(
         config['filepaths']['sp500_data_file'], index_col='Date', parse_dates=True)
     stock_raw_data = pd.read_csv(
-        config['filepaths']['sp500_data_file'], index_col='Date', parse_dates=True)
+        config['filepaths']['stock_prices_file'], index_col='Date', parse_dates=True)
 
     start_date = str(stock_raw_data.index[0])
     end_date = str(stock_raw_data.index[-1])
