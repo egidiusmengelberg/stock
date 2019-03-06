@@ -26,7 +26,7 @@ def backtest():
 
     y = list(status_calc(data_df["stock_p_change"],
                          data_df["SP500_p_change"],
-                         outperformance=10))
+                         outperformance=float(config['settings']['outperform'])))
 
     z = np.array(data_df[["stock_p_change", "SP500_p_change"]])
 
