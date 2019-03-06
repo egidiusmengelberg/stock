@@ -11,7 +11,7 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 
-statspath = config['statsPath']
+statspath = config['filepaths']['statsPath']
 
 features = [  # Valuation measures
     'Market Cap',
@@ -164,7 +164,7 @@ def parse_keystats(sp500_df, stock_df):
 
     df.dropna(axis=0, subset=['Price', 'stock_p_change'], inplace=True)
     # Output the CSV
-    df.to_csv(config['keystats_file'], index=False)
+    df.to_csv(config['filepaths']['keystats_file'], index=False)
 
 
 if __name__ == '__main__':

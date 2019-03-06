@@ -1,5 +1,7 @@
 # Preprocessing
 import configparser
+import colorama
+from termcolor import colored
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -10,6 +12,9 @@ from utils import status_calc
 #init configparser
 config = configparser.ConfigParser()
 config.read('config.ini')
+
+#init cli colors
+colorama.init()
 
 
 def backtest():
@@ -26,7 +31,7 @@ def backtest():
     z = np.array(data_df[["stock_p_change", "SP500_p_change"]])
 
     X_train, X_test, y_train, y_test, z_train, z_test = train_test_split(
-        X, y, z, test_size=0.2)
+        X, y, z, test_size=config['test_size'])
 
     clf = RandomForestClassifier(n_estimators=100, random_state=0)
     clf.fit(X_train, y_train)
@@ -38,7 +43,7 @@ def backtest():
 
     num_positive_predictions = sum(y_pred)
     if num_positive_predictions < 0:
-        print("No stocks predicted!")
+        print(colored('[Error:] ', 'red') + "No stocks predicted!")
 
     stock_returns = 1 + z_test[y_pred, 0] / 100
     market_returns = 1 + z_test[y_pred, 1] / 100
