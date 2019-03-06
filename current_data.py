@@ -128,4 +128,4 @@ def forward():
 if __name__ == '__main__':
     check_yahoo()
     current_df = forward()
-    current_df.to_csv(config['forward_sample_file'], index=False)
+    current_df.to_csv(config['filepaths']['forward_sample_file'], index=False)

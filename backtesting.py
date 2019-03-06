@@ -18,7 +18,7 @@ colorama.init()
 
 
 def backtest():
-    data_df = pd.read_csv(config['keystats_file'], index_col='Date')
+    data_df = pd.read_csv(config['filepaths']['keystats_file'], index_col='Date')
     data_df.dropna(axis=0, how='any', inplace=True)
 
     features = data_df.columns[6:]
@@ -31,7 +31,7 @@ def backtest():
     z = np.array(data_df[["stock_p_change", "SP500_p_change"]])
 
     X_train, X_test, y_train, y_test, z_train, z_test = train_test_split(
-        X, y, z, test_size=config['test_size'])
+        X, y, z, test_size=float(config['settings']['test_size']))
 
     clf = RandomForestClassifier(n_estimators=100, random_state=0)
     clf.fit(X_train, y_train)
