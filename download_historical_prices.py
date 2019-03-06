@@ -35,12 +35,12 @@ def build_stock_dataset(start=START_DATE, end=END_DATE):
         ticker for ticker in ticker_list if ticker.upper() not in stock_data.columns]
     print(colored('[Warning:] ', 'red') + f"{len(missing_tickers)} tickers are missing: \n {missing_tickers} ")
     stock_data.ffill(inplace=True)
-    stock_data.to_csv(config['stock_prices_file'])
+    stock_data.to_csv(config['filepaths']['stock_prices_file'])
 
 
 def build_sp500_dataset(start=START_DATE, end=END_DATE):
     index_data = pdr.get_data_yahoo('SPY', start=START_DATE, end=END_DATE)
-    index_data.to_csv(config['sp500_data_file'])
+    index_data.to_csv(config['filepaths']['sp500_data_file'])
 
 
 def build_dataset_iteratively(idx_start, idx_end, date_start=START_DATE, date_end=END_DATE):
@@ -59,7 +59,7 @@ def build_dataset_iteratively(idx_start, idx_end, date_start=START_DATE, date_en
             continue
         adj_close = stock_ohlc['Adj Close'].rename(ticker)
         df = pd.concat([df, adj_close], axis=1)
-    df.to_csv(config['stock_prices_file'])
+    df.to_csv(config['filepaths']['stock_prices_file'])
 
 
 if __name__ == "__main__":
