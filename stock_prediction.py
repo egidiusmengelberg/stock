@@ -8,7 +8,7 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 # The percentage by which a stock has to beat the S&P500 to be considered a 'buy'
-OUTPERFORMANCE = config['settings']['outperform']
+OUTPERFORMANCE = float(config['settings']['outperform'])
 
 
 def build_data_set():
