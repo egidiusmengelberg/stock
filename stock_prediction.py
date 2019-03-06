@@ -8,11 +8,11 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 # The percentage by which a stock has to beat the S&P500 to be considered a 'buy'
-OUTPERFORMANCE = config['outperform']
+OUTPERFORMANCE = config['settings']['outperform']
 
 
 def build_data_set():
-    training_data = pd.read_csv(config['keystats_file'], index_col='Date')
+    training_data = pd.read_csv(config['filepaths']['keystats_file'], index_col='Date')
     training_data.dropna(axis=0, how='any', inplace=True)
     features = training_data.columns[6:]
 
@@ -31,7 +31,7 @@ def predict_stocks():
     clf = RandomForestClassifier(n_estimators=100, random_state=0)
     clf.fit(X_train, y_train)
 
-    data = pd.read_csv(config['forward_sample_file'], index_col='Date')
+    data = pd.read_csv(config['filepaths']['forward_sample_file'], index_col='Date')
     data.dropna(axis=0, how='any', inplace=True)
     features = data.columns[6:]
     X_test = data[features].values

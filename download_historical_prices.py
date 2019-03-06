@@ -19,7 +19,7 @@ END_DATE = "2015-01-01"
 
 
 def build_stock_dataset(start=START_DATE, end=END_DATE):
-    statspath = config['statsPath']
+    statspath = config['filepaths']['statsPath']
     ticker_list = os.listdir(statspath)
 
     # fix .ds_store issue on mac
@@ -44,7 +44,7 @@ def build_sp500_dataset(start=START_DATE, end=END_DATE):
 
 
 def build_dataset_iteratively(idx_start, idx_end, date_start=START_DATE, date_end=END_DATE):
-    statspath = config['statsPath']
+    statspath = config['filepaths']['statsPath']
     ticker_list = os.listdir(statspath)
 
     df = pd.DataFrame()

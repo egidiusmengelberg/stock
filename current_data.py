@@ -11,7 +11,7 @@ from utils import data_string_to_float
 config = configparser.ConfigParser()
 config.read('config.ini')
 
-statspath = config['statsPath']
+statspath = config['filepaths']['statsPath']
 
 features = [  # Valuation measures
     'Market Cap',
